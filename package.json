@@ -1,0 +1,15 @@
+{
+  "name": "template-clone-demo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "benchmark": "tach --config tachometer.config.json"
+  },
+  "license": "ISC",
+  "volta": {
+    "node": "20.10.0"
+  },
+  "dependencies": {
+    "tachometer": "^0.7.0"
+  }
+}

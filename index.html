@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Benchmark</title>
+</head>
+<body>
+<div id="container"></div>
+<script type="module">
+  const params = new URLSearchParams(location.search)
+
+  const mode = params.get('mode') ?? 'manual'
+  const depth = params.get('depth') ? parseInt(params.get('depth', 10)) : 10
+  const breadth = params.get('breadth') ? parseInt(params.get('breadth', 10)) : 10
+  const count = params.get('count') ? parseInt(params.get('count', 10)) : 100
+  const container = document.getElementById('container')
+
+  performance.mark('start')
+  if (mode === 'manual') {
+    for (let index = 0; index < count; index++) {
+      const root = document.createElement('div')
+      for (let i = 0; i < breadth; i++) {
+        const row = document.createElement('div')
+        row.setAttribute('data-row-id', i.toString())
+        for (let j = 0; j < depth; j++) {
+          const cell = document.createElement('div')
+          const cellId = j.toString()
+          cell.setAttribute('data-cell-id', cellId)
+          cell.textContent = cellId
+          row.appendChild(cell)
+        }
+        root.appendChild(row)
+      }
+      container.appendChild(root)
+    }
+  } else { // clone
+    const template = document.createElement('template')
+    template.innerHTML = Array(breadth).fill().map((_, i) => `
+        <div data-row-id=${i}>
+          ${Array(depth).fill().map((_, j) => `
+            <div data-cellid=${j}>${j}</div>
+        `).join('')}
+        </div>
+      `).join('')
+
+    for (let index = 0; index < count; index++) {
+      const cloned = template.content.cloneNode(true)
+      container.appendChild(cloned)
+    }
+  }
+  performance.measure('total', 'start')
+
+
+</script>
+</body>
+</html>

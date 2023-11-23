@@ -1,0 +1,29 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json",
+  "sampleSize": 25,
+  "timeout": 5,
+  "benchmarks": [
+    {
+      "browser": {
+        "name": "chrome",
+        "headless": true
+      },
+      "measurement": [
+        {
+          "mode": "performance",
+          "entryName": "total"
+        }
+      ],
+      "expand": [
+        {
+          "name": "Manual DOM operations",
+          "url": "./index.html?mode=manual&iterations=1000"
+        },
+        {
+          "name": "Clone template",
+          "url": "./index.html?mode=clone&iterations=1000"
+        }
+      ]
+    }
+  ]
+}
