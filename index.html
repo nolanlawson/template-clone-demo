@@ -10,14 +10,14 @@
   const params = new URLSearchParams(location.search)
 
   const mode = params.get('mode') ?? 'manual'
-  const depth = params.get('depth') ? parseInt(params.get('depth', 10)) : 10
-  const breadth = params.get('breadth') ? parseInt(params.get('breadth', 10)) : 10
-  const count = params.get('count') ? parseInt(params.get('count', 10)) : 100
+  const depth = params.get('depth') ? parseInt(params.get('depth'), 10) : 10
+  const breadth = params.get('breadth') ? parseInt(params.get('breadth'), 10) : 10
+  const count = params.get('count') ? parseInt(params.get('count'), 10) : 100
   const container = document.getElementById('container')
 
   performance.mark('start')
   if (mode === 'manual') {
-    for (let index = 0; index < count; index++) {
+    for (let step = 0; step < count; step++) {
       const root = document.createElement('div')
       for (let i = 0; i < breadth; i++) {
         const row = document.createElement('div')
@@ -43,8 +43,8 @@
         </div>
       `).join('')
 
-    for (let index = 0; index < count; index++) {
-      const cloned = template.content.cloneNode(true)
+    for (let step = 0; step < count; step++) {
+      const cloned = template.content.cloneNode(true).firstElementChild
       container.appendChild(cloned)
     }
   }

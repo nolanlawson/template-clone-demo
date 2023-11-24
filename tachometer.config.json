@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json",
   "sampleSize": 25,
-  "timeout": 5,
+  "timeout": 0,
   "benchmarks": [
     {
       "browser": {
@@ -17,11 +17,11 @@
       "expand": [
         {
           "name": "Manual DOM operations",
-          "url": "./index.html?mode=manual&iterations=1000"
+          "url": "./index.html?mode=manual&depth=10&breadth=10&count=100"
         },
         {
           "name": "Clone template",
-          "url": "./index.html?mode=clone&iterations=1000"
+          "url": "./index.html?mode=clone&depth=10&breadth=10&count=100"
         }
       ]
     }
