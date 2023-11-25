@@ -9,20 +9,21 @@
 <script type="module">
   const params = new URLSearchParams(location.search)
 
-  const mode = params.get('mode') ?? 'manual'
-  const depth = params.get('depth') ? parseInt(params.get('depth'), 10) : 10
-  const breadth = params.get('breadth') ? parseInt(params.get('breadth'), 10) : 10
-  const count = params.get('count') ? parseInt(params.get('count'), 10) : 100
-  const container = document.getElementById('container')
+  const getInt = (name, fallback) => params.get(name) ? parseInt(params.get(name), 10) : fallback
 
-  performance.mark('start')
-  if (mode === 'manual') {
+  const mode = params.get('mode') ?? 'manual'
+  const rows = getInt('rows', 100)
+  const columns = getInt('columns', 10)
+  const count = getInt('count', 100)
+  let container = document.getElementById('container')
+
+  const createManually = () => {
     for (let step = 0; step < count; step++) {
       const root = document.createElement('div')
-      for (let i = 0; i < breadth; i++) {
+      for (let i = 0; i < rows; i++) {
         const row = document.createElement('div')
         row.setAttribute('data-row-id', i.toString())
-        for (let j = 0; j < depth; j++) {
+        for (let j = 0; j < columns; j++) {
           const cell = document.createElement('div')
           const cellId = j.toString()
           cell.setAttribute('data-cell-id', cellId)
@@ -33,20 +34,42 @@
       }
       container.appendChild(root)
     }
-  } else { // clone
+  }
+
+  const createUsingCloning = () => {
     const template = document.createElement('template')
-    template.innerHTML = Array(breadth).fill().map((_, i) => `
+    template.innerHTML = `<div>
+      ${Array(rows).fill().map((_, i) => `
         <div data-row-id=${i}>
-          ${Array(depth).fill().map((_, j) => `
-            <div data-cellid=${j}>${j}</div>
+          ${Array(columns).fill().map((_, j) => `
+            <div data-cell-id=${j}>${j}</div>
         `).join('')}
         </div>
-      `).join('')
+      `).join('')}
+    </div>`
 
     for (let step = 0; step < count; step++) {
       const cloned = template.content.cloneNode(true).firstElementChild
       container.appendChild(cloned)
     }
+  }
+
+  performance.mark('start')
+  if (mode === 'test') {
+    const container1 = document.createElement('div')
+    const container2 = document.createElement('div')
+    container = container1
+    createManually()
+    container = container2
+    createUsingCloning()
+    const cleanOuterHTML = _ => _.outerHTML.replace(/>\s+</sg, '><')
+    if (cleanOuterHTML(container1) !== cleanOuterHTML(container2)) {
+      throw new Error('the two should not be different!')
+    }
+  } else if (mode === 'manual') {
+    createManually()
+  } else { // clone
+    createUsingCloning()
   }
   performance.measure('total', 'start')
 

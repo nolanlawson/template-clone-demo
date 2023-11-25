@@ -17,11 +17,11 @@
       "expand": [
         {
           "name": "Manual DOM operations",
-          "url": "./index.html?mode=manual&depth=10&breadth=10&count=100"
+          "url": "./index.html?mode=manual"
         },
         {
           "name": "Clone template",
-          "url": "./index.html?mode=clone&depth=10&breadth=10&count=100"
+          "url": "./index.html?mode=clone"
         }
       ]
     }
