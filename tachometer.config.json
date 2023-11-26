@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json",
-  "sampleSize": 25,
+  "sampleSize": 51,
   "timeout": 0,
   "benchmarks": [
     {
